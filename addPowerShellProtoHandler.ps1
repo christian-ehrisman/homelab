@@ -31,7 +31,7 @@ if ('' -eq $argArray[0]) { $argArray = $argArray[1..($argArray.Count-1)] }
 
 $i = 0
 foreach ($arg in $argArray) {
-  "#$((++$i)): [$arg]"
+  Invoke-Expression $arg
 }
 
 '@ > $handlerScript
