@@ -73,6 +73,6 @@ Remove-Item -ErrorAction Ignore -LiteralPath $tempFile
 # ---
 
 # Sample invocation of the new protocol with 3 arguments:
-$uri = "$schemeName`:one `"two & three`" four"
-Write-Verbose -Verbose "Invoking the following URI: $uri"
-Start-Process $uri
+# $uri = "$schemeName`:one `"two & three`" four"
+# Write-Verbose -Verbose "Invoking the following URI: $uri"
+# Start-Process $uri
