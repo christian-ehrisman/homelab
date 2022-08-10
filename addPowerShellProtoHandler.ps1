@@ -1,6 +1,9 @@
+
 # Determine the scope:
 # Set to $false to install machine-wide (for all users)
 # Note: Doing so then requires running with ELEVATION.
+# .Net methods for hiding/showing the console in the background
+
 $currentUserOnly = $true
 
 if (-not $currentUserOnly) {
@@ -11,7 +14,7 @@ if (-not $currentUserOnly) {
 $ErrorActionPreference = 'Stop'
 
 # The name of the new protocol scheme
-$schemeName = 'custom'
+$schemeName = 'ps'
 
 $pwshPathEscaped = (Get-Process -Id $PID).Path -replace '\\', '\\'
 
@@ -20,7 +23,6 @@ $handlerScriptEscaped = $handlerScript -replace '\\', '\\'
 
 # Create the protocol handler script.
 @'
-
 # Remove the protocol scheme name from the 1st argument.
 $argArray = $args.Clone()
 $argArray[0] = $argArray[0] -replace '^[^:]+:'
@@ -29,10 +31,14 @@ if ('' -eq $argArray[0]) { $argArray = $argArray[1..($argArray.Count-1)] }
 
 "Received $($argArray.Count) argument(s)."
 
-$i = 0
-foreach ($arg in $argArray) {
-  Invoke-Expression $arg
+# $i = 0
+$argArrayStr = ''
+ foreach ($arg in $argArray) {
+    $argArrayStr += $arg + ' '
+
 }
+Invoke-Expression $argArrayStr
+
 
 '@ > $handlerScript
 
@@ -54,9 +60,11 @@ Windows Registry Editor Version 5.00
 [$rootKey\$schemeName\shell]
 @="open"
 
+
 [$rootKey\$schemeName\shell\open\command]
 ; === Tweak the PowerShell command line here: ===
-@="\"$pwshPathEscaped\" -ExecutionPolicy Bypass -NoProfile -NoExit -File \"$handlerScriptEscaped\" %1"
+
+@="run-hidden.exe \"$pwshPathEscaped\" -ExecutionPolicy Bypass -NoProfile -File \"$handlerScriptEscaped\" %1"
 
 "@ > $tempFile
 
