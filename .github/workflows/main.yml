@@ -3,6 +3,7 @@ on: workflow_dispatch
 jobs:
   pingme-job:
     runs-on: ubuntu-latest
+    environment: home
     name: PingMe
     steps:
       - name: Checkout
