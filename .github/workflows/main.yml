@@ -1,0 +1,21 @@
+on: workflow_dispatch
+
+jobs:
+  pingme-job:
+    runs-on: ubuntu-latest
+    environment: home
+    name: PingMe
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Ping me On
+        uses: kha7iq/pingme-action@v1
+        env:
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+          PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
+          PUSHOVER_TITLE: 'Test'
+          PUSHOVER_MESSAGE: 'Event is triggered by test'
+        
+        with:
+          service: pushover
