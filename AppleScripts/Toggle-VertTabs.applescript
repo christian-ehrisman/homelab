@@ -1,11 +1,8 @@
-set timeoutSeconds to 2.0
-set thisName to name of first window of application "Microsoft Edge"
-
+delay 3
 global frontApp, frontAppName, windowTitle
-
 set windowTitle to ""
 tell application "System Events"
-    set frontApp to first application process whose frontmost is true
+    set frontApp to first application process whose name is "Microsoft Edge"---frontmost is true
     set frontAppName to name of frontApp
     tell process frontAppName
         tell (1st window whose value of attribute "AXMain" is true)
@@ -14,12 +11,10 @@ tell application "System Events"
     end tell
 end tell
 
-return {frontAppName, windowTitle}
-set c1 to "click UI Element 2 of tab group 2 of group 1 of group 1 of group 1 of group "
-set c2 to "of window "
-set c3 to " of application process \"Microsoft Edge\""
-set uiScript to c1 & windowName & c2 & windowName & c3
+return {windowTitle}
 
+set uiScript to "click UI Element 2 of tab group 2 of group 1 of group 1 of group 1 of group \"" & windowTitle & "\" of window \"" & windowTitle & "\" of application process \"Microsoft Edge\""
+display dialog  uiScript
 my doWithTimeout(uiScript, timeoutSeconds)
 on doWithTimeout(uiScript, timeoutSeconds)
 	set endDate to (current date) + timeoutSeconds
